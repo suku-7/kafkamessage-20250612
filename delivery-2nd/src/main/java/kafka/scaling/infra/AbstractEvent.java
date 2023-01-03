@@ -2,9 +2,8 @@ package kafka.scaling.infra;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import kafka.scaling.OrderApplication;
+import kafka.scaling.DeliveryApplication;
 import kafka.scaling.config.kafka.KafkaProcessor;
-import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.beans.BeanUtils;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHeaders;
@@ -32,7 +31,7 @@ public class AbstractEvent {
         /**
          * spring streams 방식
          */
-        KafkaProcessor processor = OrderApplication.applicationContext.getBean(
+        KafkaProcessor processor = DeliveryApplication.applicationContext.getBean(
             KafkaProcessor.class
         );
         MessageChannel outputChannel = processor.outboundTopic();
@@ -59,7 +58,7 @@ public class AbstractEvent {
             }
         );
     }
-     
+
     public String getEventType() {
         return eventType;
     }
