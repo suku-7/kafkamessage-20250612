@@ -44,6 +44,7 @@ public class Delivery {
         delivery.setProductName(orderPlaced.getProductName());
         delivery.setCustomerId(orderPlaced.getCustomerId());
         delivery.setQty(orderPlaced.getQty());
+        delivery.setAddress(orderPlaced.getAddress());
         delivery.setStatus("DELIVERY STARTED");
 
         repository().save(delivery);
@@ -67,16 +68,14 @@ public class Delivery {
     }
 
     public static void modifyDelivery(OrderModified orderModified) {
-        /** Example 1:  new item 
-        Delivery delivery = new Delivery();
-        repository().save(delivery);
+        if (orderModified.getCustomerId()==2000L)   // KIM이 수정할 경우, 강제 Delay
+            try {
+                Thread.sleep(20000L);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
-        DeliveryModified deliveryModified = new DeliveryModified(delivery);
-        deliveryModified.publishAfterCommit();
-        */
-
-        /** Example 2:  finding and process */
-        repository().findById(orderModified.getId()).ifPresentOrElse(delivery ->{  
+        repository().findByOrderId(orderModified.getId()).ifPresentOrElse(delivery ->{  
             
             delivery.setAddress(orderModified.getAddress()); // do something
             repository().save(delivery);
@@ -90,7 +89,6 @@ public class Delivery {
          }
         );
     }
-
     public static void cancelDelivery(OrderCancelled orderCancelled) {
         /** Example 1:  new item 
         Delivery delivery = new Delivery();
@@ -102,7 +100,7 @@ public class Delivery {
 
         /** Example 2:  finding and process */
         
-        repository().findById(orderCancelled.getId()).ifPresentOrElse(delivery ->{  
+        repository().findByOrderId(orderCancelled.getId()).ifPresentOrElse(delivery ->{  
             
             // do something
             repository().delete(delivery);
@@ -117,3 +115,6 @@ public class Delivery {
        );
    }
 }
+
+
+
