@@ -48,7 +48,7 @@ spring:
           destination: kafka.scaling
           contentType: application/json
         event-out:
-          destination: kafka.delivery
+          destination: kafka.scaling
           contentType: application/json
 
 logging:

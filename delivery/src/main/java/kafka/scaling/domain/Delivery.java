@@ -70,7 +70,7 @@ public class Delivery {
     public static void modifyDelivery(OrderModified orderModified) {
         if (orderModified.getCustomerId()==1000L)   // KIM이 수정할 경우, 강제 Delay
             try {
-                Thread.sleep(20000L);
+                Thread.sleep(10000L);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -78,6 +78,7 @@ public class Delivery {
         repository().findByOrderId(orderModified.getId()).ifPresentOrElse(delivery ->{  
             
             delivery.setAddress(orderModified.getAddress()); // do something
+            delivery.setStatus("DELIVERY MODIFIED");
             repository().save(delivery);
 
             DeliveryModified deliveryModified = new DeliveryModified(delivery);
@@ -85,7 +86,7 @@ public class Delivery {
 
          }
          ,()->{
-             throw new RuntimeException("수정할 대상 정보를 찾을 수 없습니다.");
+             throw new RuntimeException("\n\n#####  수정 대상을 찾을 수 없습니다.\n\n");
          }
         );
     }
@@ -103,14 +104,15 @@ public class Delivery {
         repository().findByOrderId(orderCancelled.getId()).ifPresentOrElse(delivery ->{  
             
             // do something
-            repository().delete(delivery);
+            delivery.setStatus("DELIVERY CANCELLED");
+            repository().save(delivery);
 
-            DeliveryModified deliveryModified = new DeliveryModified(delivery);
-            deliveryModified.publishAfterCommit();
+            DeliveryCancelled deliveryCancelled = new DeliveryCancelled(delivery);
+            deliveryCancelled.publishAfterCommit();
 
         }
         ,()->{
-            throw new RuntimeException("삭제할 대상 정보를 찾을 수 없습니다.");
+            throw new RuntimeException(("\n\n#####  삭제 대상을 찾을 수 없습니다.\n\n");
         }
        );
    }
