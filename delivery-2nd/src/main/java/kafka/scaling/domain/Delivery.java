@@ -112,7 +112,7 @@ public class Delivery {
 
         }
         ,()->{
-            throw new RuntimeException(("\n\n#####  삭제 대상을 찾을 수 없습니다.\n\n");
+            throw new RuntimeException("\n\n#####  삭제 대상을 찾을 수 없습니다.\n\n");
         }
        );
    }
