@@ -68,7 +68,7 @@ public class Delivery {
     }
 
     public static void modifyDelivery(OrderModified orderModified) {
-        if (orderModified.getCustomerId()==1000L)   // KIM이 수정할 경우, 강제 Delay
+        if (orderModified.getCustomerId()==2000L)   // KIM이 수정할 경우, 강제 Delay
             try {
                 Thread.sleep(10000L);
             } catch (InterruptedException e) {
