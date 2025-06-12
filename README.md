@@ -6,13 +6,13 @@ https://labs.msaez.io/#/189596125/storming/kafka-scaling2
 이 문서는 프로젝트 실행 및 테스트에 필요한 명령어를 순서대로 정리한 가이드입니다. 필요한 부분을 복사하여 터미널에 바로 사용할 수 있습니다.
 
 0. 재실행 시 초기화 (선택 사항)
-# Java 버전 확인
+Java 버전 확인
 java -version
 
-# 초기화 스크립트 실행
+초기화 스크립트 실행
 ./init.sh
 
-# Kafka 디렉토리로 이동 후 Docker Compose 시작 (9092 포트가 실행되지 않는 경우에만)
+Kafka 디렉토리로 이동 후 Docker Compose 시작 (9092 포트가 실행되지 않는 경우에만)
 cd kafka
 docker-compose up
 
@@ -23,24 +23,24 @@ sdk install java
 order, delivery, delivery-2nd 서비스의 Lombok 버전을 1.18.30으로 수정합니다.  
 
 3. MySQL 및 서비스 실행  
-# MySQL 실행  
+MySQL 실행  
 cd mysql  
 docker-compose up -d  
 
-# Order 서비스 실행  
+Order 서비스 실행  
 cd ../order  
 mvn clean spring-boot:run  
 
-# Delivery 서비스 실행  
+Delivery 서비스 실행  
 cd ../delivery  
 mvn clean spring-boot:run  
 
 4. Kafka 토픽 모니터링 시작  
-# Kafka 컨테이너 내부로 진입  
+Kafka 컨테이너 내부로 진입  
 cd ../kafka  
 docker-compose exec kafka /bin/bash  
 
-# bin 디렉토리로 이동 후 컨슈머 실행  
+bin 디렉토리로 이동 후 컨슈머 실행  
 cd /bin  
 ./kafka-console-consumer --bootstrap-server localhost:9092 --topic kafka.scaling --from-beginning  
 
@@ -55,22 +55,22 @@ http PATCH :8081/orders/2 address=SEOUL
 http DELETE :8081/orders/2  
 
 8. DB 조회 (Delivery Service)  
-# MySQL 컨테이너 내부로 진입  
+MySQL 컨테이너 내부로 진입  
 cd ../mysql  
 docker-compose exec -it master-server bash  
 
-# MySQL 클라이언트 접속  
+MySQL 클라이언트 접속  
 mysql --user=root --password=1234  
 
-# DB 선택 및 데이터 조회  
+DB 선택 및 데이터 조회  
 use my-database;  
 select * from Delivery_table;  
 
 9. Kafka 토픽 파티션 변경 및 확인  
-# 파티션 수 변경  
+파티션 수 변경  
 ./kafka-topics --bootstrap-server 127.0.0.1:9092 --alter --topic kafka.scaling --partitions 2  
 
-# 토픽 정보 확인  
+토픽 정보 확인  
 ./kafka-topics --bootstrap-server 127.0.0.1:9092 --topic kafka.scaling --describe  
 
 10. 두 번째 Delivery 서비스 실행  
@@ -78,13 +78,13 @@ cd ../delivery-2nd
 mvn clean spring-boot:run  
 
 11. 메시징 순서 테스트 (비-확정적 처리)  
-# 주문 생성  
+주문 생성  
 http :8081/orders customerId=2000 productId=100 productName=RADIO qty=3 address=PUSAN  
 
-# 주문 수정 (예시)  
+주문 수정 (예시)  
 http PATCH :8081/orders/5 address=SEOUL  
 
-# 주문 삭제 (예시)  
+주문 삭제 (예시)  
 http DELETE :8081/orders/5  
 
 12. Kafka 컨슈머 재시작  
