@@ -2,8 +2,14 @@
 ## kafkamessage-20250612(주문 ID(Order ID)를 메시지 키로 사용하여, 같은 주문과 관련된 모든 이벤트 동일 파티션에 관리)
 https://labs.msaez.io/#/189596125/storming/kafka-scaling2
 
-프로젝트 실행 가이드 및 터미널 명령어
-이 문서는 프로젝트 실행 및 테스트에 필요한 명령어를 순서대로 정리한 가이드입니다. 필요한 부분을 복사하여 터미널에 바로 사용할 수 있습니다.
+![스크린샷 2025-06-12 100611](https://github.com/user-attachments/assets/22f61098-7610-4c05-bf71-fac7a6a2eab7)
+![스크린샷 2025-06-12 120720](https://github.com/user-attachments/assets/be23f4fa-5d2f-4133-af39-315c25eeddc6)
+![스크린샷 2025-06-12 120829](https://github.com/user-attachments/assets/ed14288c-8ceb-44c6-afcd-f011c206bf3c)
+
+---
+프로젝트 실행 가이드 및 터미널 명령어  
+이 문서는 프로젝트 실행 및 테스트에 필요한 명령어를 순서대로 정리한 가이드입니다.  
+필요한 부분을 복사하여 터미널에 바로 사용할 수 있습니다.  
 
 0. 재실행 시 초기화 (선택 사항)
 Java 버전 확인
