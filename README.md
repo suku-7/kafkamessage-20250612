@@ -10,20 +10,20 @@ https://labs.msaez.io/#/189596125/storming/kafka-scaling2
 ##프로젝트 실행 가이드 및 터미널 명령어  
 - 이 문서는 프로젝트 실행 및 테스트에 필요한 명령어를 순서대로 정리한 가이드입니다.  
 - 필요한 부분을 복사하여 터미널에 바로 사용할 수 있습니다.  
-
+---
 0. 재실행 시 초기화 (선택 사항)
 - Java 버전 확인
 - java -version
 - ./init.sh
 - cd kafka
 - docker-compose up
-
+---
 1. Java SDK 설치  
 - sdk install java  
-
+---
 2. Lombok 버전 수정  
 - order, delivery, delivery-2nd 서비스의 Lombok 버전을 1.18.30으로 수정합니다.  
-
+---
 3. MySQL 및 서비스 실행  
 - MySQL 실행  
 - cd mysql  
@@ -36,7 +36,7 @@ https://labs.msaez.io/#/189596125/storming/kafka-scaling2
 - Delivery 서비스 실행  
 - cd ../delivery  
 - mvn clean spring-boot:run  
-
+---
 4. Kafka 토픽 모니터링 시작  
 - Kafka 컨테이너 내부로 진입  
 - cd ../kafka  
@@ -45,17 +45,17 @@ https://labs.msaez.io/#/189596125/storming/kafka-scaling2
 - bin 디렉토리로 이동 후 컨슈머 실행  
 - cd /bin  
 - ./kafka-console-consumer --bootstrap-server localhost:9092 --topic kafka.scaling --from-beginning  
-
+---
 5. 주문 생성 (Order Service)  
 - http :8081/orders customerId=1000 productId=100 productName=TV qty=3 address=SEOUL  
 - http :8081/orders customerId=2000 productId=100 productName=RADIO qty=3 address=PUSAN  
-
+---
 6. 주문 수정 (Order Service)  
 - http PATCH :8081/orders/2 address=SEOUL  
-
+---
 7. 주문 삭제 (Order Service)  
 - http DELETE :8081/orders/2  
-
+---
 8. DB 조회 (Delivery Service)  
 - MySQL 컨테이너 내부로 진입  
 - cd ../mysql  
@@ -67,18 +67,18 @@ https://labs.msaez.io/#/189596125/storming/kafka-scaling2
 - DB 선택 및 데이터 조회  
 - use my-database;  
 - select * from Delivery_table;  
-
+---
 9. Kafka 토픽 파티션 변경 및 확인  
 - 파티션 수 변경  
 - ./kafka-topics --bootstrap-server 127.0.0.1:9092 --alter --topic kafka.scaling --partitions 2  
 
 - 토픽 정보 확인  
 - ./kafka-topics --bootstrap-server 127.0.0.1:9092 --topic kafka.scaling --describe  
-
+---
 10. 두 번째 Delivery 서비스 실행  
 - cd ../delivery-2nd  
 - mvn clean spring-boot:run  
-
+---
 11. 메시징 순서 테스트 (비-확정적 처리)  
 - 주문 생성  
 - http :8081/orders customerId=2000 productId=100 productName=RADIO qty=3 address=PUSAN  
@@ -88,20 +88,20 @@ https://labs.msaez.io/#/189596125/storming/kafka-scaling2
 
 - 주문 삭제 (예시)  
 - http DELETE :8081/orders/5  
-
+---
 12. Kafka 컨슈머 재시작  
 - ./kafka-console-consumer --bootstrap-server localhost:9092 --topic kafka.scaling --from-beginning  
-
+---
 13. Order 서비스 코드 수정 및 재실행  
 - Order.java 및 AbstractEvent.java에 메시지 키 적용  
 - 이후 Order 서비스 재실행  
 - mvn clean spring-boot:run  
-
+---
 14. 메시지 키 적용 후 재주문 수정 삭제  
 - http :8081/orders customerId=2000 productId=100 productName=RADIO qty=3 address=PUSAN  
 - http PATCH :8081/orders/6 address=SEOUL  
 - http DELETE :8081/orders/6  
-
+---
 15. Kafka 및 DB 조회 결과 확인  
 - Delivery DB에서 확인  
 - select * from Delivery_table;  
